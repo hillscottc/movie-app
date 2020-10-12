@@ -1,6 +1,6 @@
-# react-for-heroku
+# Movie App
 
-Heroku app name is calm-waters-80883
+Heroku app name is afternoon-stream-77228
 
 ## Instructions
 
@@ -11,11 +11,20 @@ Heroku app name is calm-waters-80883
 3. Run `npm run dev`, **localhost:8080** will open up in your default browser
 
 - Production, served from heroku
-  <https://calm-waters-80883.herokuapp.com>
+  <https://afternoon-stream-77228.herokuapp.com>
+
+## Heroku setup
+
+These are the steps I used to deploy to Heroku
+
+1. Push the repo to github
+2. `heroku create` # Created app name afternoon-stream-77228
+3. `heroku addons:create heroku-postgresql:hobby-dev`  # Created postgresql-spherical-36139 as DATABASE_URL
+4. `heroku pg:psql` # To open psql to db. Then follow the Databse instructions below to create tables.
 
 ## Database
 
-- The Heroku DATABASE_URL is `postgresql-dimensional-59756`
+- The Heroku DATABASE_URL is `postgresql-spherical-36139`
 - To use psql: `heroku pg:psql`
 
 The `movies` table was created with:
@@ -26,6 +35,7 @@ id SERIAL PRIMARY KEY,
 title VARCHAR(30),
 year SMALLINT,
 thumb VARCHAR(30),
+videoUrl VARCHAR(30),
 created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
  );
@@ -50,7 +60,7 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 - GET ALL
 
 ```bash
-curl -i -H "Accept: application/json" "https://calm-waters-80883.herokuapp.com/api/movies"
+curl -i -H "Accept: application/json" "https://afternoon-stream-77228.herokuapp.com/api/movies"
 ```
 
 - INSERT WITH JSON DATA
@@ -58,14 +68,14 @@ curl -i -H "Accept: application/json" "https://calm-waters-80883.herokuapp.com/a
 ```bash
 curl -H "Content-Type: application/json" -X POST \
   -d '{"title":"blah", "year":"2020"}' \
-  "https://calm-waters-80883.herokuapp.com/api/movies"
+  "https://afternoon-stream-77228.herokuapp.com/api/movies"
 ```
 
 - DELETE
 
 ```bash
 # where 8 is the id
-curl -X DELETE "https://calm-waters-80883.herokuapp.com/api/movies/8"
+curl -X DELETE "https://afternoon-stream-77228.herokuapp.com/api/movies/8"
 ```
 
 ### Dev server webpack config to proxy /api queries
@@ -77,7 +87,7 @@ devServer: {
     // Set proxy so /api goes to the node server
     proxy: {
       "/api": {
-        target: "https://calm-waters-80883.herokuapp.com",
+        target: "https://afternoon-stream-77228.herokuapp.com",
         secure: false,
         changeOrigin: true,
       },

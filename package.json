@@ -1,5 +1,5 @@
 {
-  "name": "heroku-postgres-webpack",
+  "name": "movie-app",
   "version": "1.0.0",
   "description": "fullstack node+postgres+react with heroku hosting",
   "main": "index.js",

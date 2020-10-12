@@ -10,7 +10,7 @@ module.exports = {
     // Set proxy so /api goes to the node server
     proxy: {
       "/api": {
-        target: "https://calm-waters-80883.herokuapp.com",
+        target: "https://afternoon-stream-77228.herokuapp.com",
         secure: false,
         changeOrigin: true,
       },
