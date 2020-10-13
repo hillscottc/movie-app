@@ -29,6 +29,18 @@ app.get("/api/movies", (req, res) => {
     });
 });
 
+// movie by id
+app.get("/api/movies/:id", (req, res) => {
+  movie_model
+    .getMovieById(req.params.id)
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 // insert movie with json data
 app.post("/api/movies", jsonParser, (req, res) => {
   movie_model
@@ -53,11 +65,10 @@ app.delete("/api/movies/:id", (req, res) => {
     });
 });
 
-// SAMPLE FOR HANDLING FORM DATA 
+// SAMPLE FOR HANDLING FORM DATA
 // const urlencodedParser = bodyParser.urlencoded({ extended: false });
 // app.post('/login', urlencodedParser, function (req, res) {
 //   res.send('welcome, ' + req.body.username)
 // })
-
 
 app.listen(port);

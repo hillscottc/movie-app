@@ -4,6 +4,13 @@ export async function getMovieList() {
   return movies;
 }
 
+
+export async function getMovieById(id) {
+  const response = await fetch(`/api/movies/${id}`);
+  const movies = await response.json();
+  return movies;
+}
+
 // function getAlbumsByArtist(artist) {
 //   fetch(`${HOST_URL}/albums?artist=${artist}`)
 //     .then((response) => response.json())

@@ -18,6 +18,19 @@ const getMovies = () => {
   });
 };
 
+const getMovieById = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM movies WHERE id = $1",
+    [id],
+     (error, results) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(results.rows);
+    });
+  });
+};
+
 const createMovie = (body) => {
   return new Promise((resolve, reject) => {
     const { title, year } = body;
@@ -50,6 +63,7 @@ const deleteMovie = (movieId) => {
 
 module.exports = {
   getMovies,
+  getMovieById,  
   createMovie,
   deleteMovie,
 };
