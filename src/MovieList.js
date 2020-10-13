@@ -2,6 +2,8 @@ import React from "react";
 import * as XDate from "xdate";
 import styled from "styled-components";
 import { useTable, useSortBy } from "react-table";
+import { Link } from "react-router-dom";
+
 // import "./MovieList.css";
 
 const getFormattedDate = (date) => {
@@ -115,15 +117,16 @@ function MovieList({ movies }) {
       },
       {
         accessor: "accessor",
-        Header: "edit?",
+        Header: "Detail",
         Cell: ({ row: { original } }) => (
-          <button onClick={() => console.log(original)}>Button text</button>
+          <Link to={`/detail?id=${original.id}`}>Detail</Link>
         ),
       },
     ],
     []
   );
 
+  // This might not be correct usage of useMemo
   const data = React.useMemo(() => movies, [movies]);
   // const data = movies;
 

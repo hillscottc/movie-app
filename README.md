@@ -1,6 +1,7 @@
 # Movie App
 
 Heroku app name is afternoon-stream-77228
+Based from my <https://github.com/hillscottc/heroku-postgres-webpack>
 
 ## Instructions
 
