@@ -1,0 +1,5 @@
+@import "../node_modules/picnic/picnic.min.css";
+
+main {
+  margin: 50px 10px;
+}

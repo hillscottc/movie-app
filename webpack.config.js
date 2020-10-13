@@ -20,6 +20,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(jpg|png)$/,
+        use: {
+          loader: 'url-loader',
+        },
+      },      
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {

@@ -1,45 +1,13 @@
 import React from "react";
 import * as XDate from "xdate";
-import styled from "styled-components";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
-
-// import "./MovieList.css";
 
 const getFormattedDate = (date) => {
   if (!date) return null;
   const dateObj = new XDate(date);
   return dateObj.toString("M/d/yy h(:mm)TT");
 };
-
-const Styles = styled.div`
-  padding: 1rem;
-
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`;
 
 function Table({ columns, data }) {
   const {
@@ -131,9 +99,10 @@ function MovieList({ movies }) {
   // const data = movies;
 
   return (
-    <Styles>
-      <Table columns={columns} data={data} />
-    </Styles>
+    // <Styles>
+    //   <Table columns={columns} data={data} />
+    // </Styles>
+    <Table columns={columns} data={data} />
   );
 }
 

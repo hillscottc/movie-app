@@ -19,8 +19,8 @@ export default function MovieDetail() {
   }, []);
 
   return (
-    <div>
-      <h2>DETAIL </h2>
+    <main>
+      <h1>DETAIL </h1>
       <dl>
         <dt>Title</dt>
         <dd>{movie && movie.title}</dd>
@@ -31,6 +31,6 @@ export default function MovieDetail() {
         <dt>Trailer</dt>
         <dd>{movie && <ReactPlayer url={movie.videourl} />}</dd>
       </dl>
-    </div>
+    </main>
   );
 }

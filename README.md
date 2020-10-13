@@ -25,7 +25,7 @@ These are the steps I used to deploy to Heroku
 
 ## Stuff Used
 
-[Picnic CSS](https://github.com/franciscop/picnic)
+[Picnic CSS](https://picnicss.com/documentation)
 
 ## Database
 
