@@ -20,8 +20,12 @@ These are the steps I used to deploy to Heroku
 
 1. Push the repo to github
 2. `heroku create` # Created app name afternoon-stream-77228
-3. `heroku addons:create heroku-postgresql:hobby-dev`  # Created postgresql-spherical-36139 as DATABASE_URL
+3. `heroku addons:create heroku-postgresql:hobby-dev` # Created postgresql-spherical-36139 as DATABASE_URL
 4. `heroku pg:psql` # To open psql to db. Then follow the Databse instructions below to create tables.
+
+## Stuff Used
+
+[Picnic CSS](https://github.com/franciscop/picnic)
 
 ## Database
 
@@ -62,6 +66,12 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 
 ```bash
 curl -i -H "Accept: application/json" "https://afternoon-stream-77228.herokuapp.com/api/movies"
+```
+
+- GET BY ID
+
+```bash
+curl -i -H "Accept: application/json" "https://afternoon-stream-77228.herokuapp.com/api/movies/1"
 ```
 
 - INSERT WITH JSON DATA

@@ -3,20 +3,19 @@ import MovieList from "./MovieList";
 import MovieDetail from "./MovieDetail";
 import { getMovieList } from "./MovieApi";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import "./App.css";
 
 export default function App() {
   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/detail">Detail</Link>
-            </li>
-          </ul>
+        <nav className="app__nav">
+          <div className="app__nav__item">
+            <Link to="/">Home</Link>
+          </div>
+          <div className="app__nav__item">
+            <Link to="/detail">Detail</Link>
+          </div>
         </nav>
         <Switch>
           <Route path="/detail">

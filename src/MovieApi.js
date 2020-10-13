@@ -4,11 +4,10 @@ export async function getMovieList() {
   return movies;
 }
 
-
 export async function getMovieById(id) {
   const response = await fetch(`/api/movies/${id}`);
   const movies = await response.json();
-  return movies;
+  if (movies.length > 0) return movies[0];
 }
 
 // function getAlbumsByArtist(artist) {
