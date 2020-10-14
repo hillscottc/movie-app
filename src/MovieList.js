@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
-import * as XDate from "xdate";
 import { getMovieList } from "./MovieApi";
-
-const getFormattedDate = (date) => {
-  if (!date) return null;
-  const dateObj = new XDate(date);
-  return dateObj.toString("M/d/yy h(:mm)TT");
-};
 
 export default function MovieList() {
   const [movies, setMovies] = useState([]);
@@ -22,7 +15,7 @@ export default function MovieList() {
     getMovieList().then((data) => setMovies(data));
   }, []);
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: "Title",
