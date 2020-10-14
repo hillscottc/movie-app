@@ -19,6 +19,8 @@ export default function MovieList() {
     () => [
       { Header: "Title", accessor: "title" },
       { Header: "Year", accessor: "year" },
+      { Header: "Stars", accessor: "imdb_stars" },
+      { Header: "IMDB", accessor: "imdb" },
     ],
     []
   );
@@ -32,19 +34,29 @@ export default function MovieList() {
 }
 
 function Table({ columns, data }) {
+  /** Get custom cells for some columns */
+  const getCell = (value, column, original) => {
+    let cell;
+    switch (column.id) {
+      case "title":
+        cell = <Link to={`/detail?id=${original.id}`}>{original.title}</Link>;
+        break;
+      case "imdb":
+        cell = (
+          <a href={original.imdb} target="_blank">
+            link
+          </a>
+        );
+        break;
+      default:
+        cell = value;
+    }
+    return cell;
+  };
 
   const DefaultCell = ({ cell: { value, column }, row: { original } }) => (
-    <span
-      style={{
-        whiteSpace: "pre-wrap",
-      }}
-    >
-      {/* To handle the title column differently, as a link */}
-      {column.id === "title" ? (
-        <Link to={`/detail?id=${original.id}`}>{original.title}</Link>
-      ) : (
-        value
-      )}
+    <span style={{ whiteSpace: "pre-wrap" }}>
+      {getCell(value, column, original)}
     </span>
   );
 
@@ -73,7 +85,7 @@ function Table({ columns, data }) {
     useSortBy
   );
 
-  // Cap rows at 100
+  // Cap number of rows
   const firstPageRows = rows.slice(0, 100);
 
   return (
