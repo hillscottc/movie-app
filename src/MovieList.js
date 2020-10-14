@@ -1,13 +1,54 @@
-import React from "react";
-import * as XDate from "xdate";
+import React, { useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
+import * as XDate from "xdate";
+import { getMovieList } from "./MovieApi";
 
 const getFormattedDate = (date) => {
   if (!date) return null;
   const dateObj = new XDate(date);
   return dateObj.toString("M/d/yy h(:mm)TT");
 };
+
+export default function MovieList() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    getMovieList().then((data) => setMovies(data));
+  }, []);
+
+  // Try useMemo instead of useEffect?
+  // const data = React.useMemo(() => movies, [movies]);
+  // const data = movies;
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "Title",
+        accessor: "title",
+      },
+      {
+        Header: "Year",
+        accessor: "year",
+      },
+      {
+        accessor: "accessor",
+        Header: "Detail",
+        Cell: ({ row: { original } }) => (
+          <Link to={`/detail?id=${original.id}`}>Detail</Link>
+        ),
+      },
+    ],
+    []
+  );
+
+  return (
+    <main>
+      <h1>Movies</h1>
+      <Table columns={columns} data={movies} />
+    </main>
+  );
+}
 
 function Table({ columns, data }) {
   const {
@@ -34,8 +75,7 @@ function Table({ columns, data }) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                // Add the sorting props to control sorting. For this example
-                // we can add them into the header props
+                // Add the sorting props 
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
                   {/* Add a sort direction indicator */}
@@ -71,39 +111,3 @@ function Table({ columns, data }) {
     </>
   );
 }
-
-function MovieList({ movies }) {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Title",
-        accessor: "title",
-      },
-      {
-        Header: "Year",
-        accessor: "year",
-      },
-      {
-        accessor: "accessor",
-        Header: "Detail",
-        Cell: ({ row: { original } }) => (
-          <Link to={`/detail?id=${original.id}`}>Detail</Link>
-        ),
-      },
-    ],
-    []
-  );
-
-  // This might not be correct usage of useMemo
-  const data = React.useMemo(() => movies, [movies]);
-  // const data = movies;
-
-  return (
-    // <Styles>
-    //   <Table columns={columns} data={data} />
-    // </Styles>
-    <Table columns={columns} data={data} />
-  );
-}
-
-export default MovieList;

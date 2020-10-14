@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import MovieList from "./MovieList";
 import MovieDetail from "./MovieDetail";
 import MovieAdd from "./MovieAdd";
-import { getMovieList } from "./MovieApi";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import marvelLogo from "./images/marvel-logo.png";
 
@@ -12,16 +11,16 @@ export default function App() {
     <Router>
       <div>
         <nav>
-          <Link to="/" class="brand">
-            <img class="logo" src={marvelLogo} />
+          <Link to="/" className="brand">
+            <img className="logo" src={marvelLogo} />
             <span>Movie App</span>
           </Link>
 
-          <div class="menu">
-            <Link to="/" class="button">
+          <div className="menu">
+            <Link to="/" className="button">
               Home
             </Link>
-            <Link to="/add" class="button">
+            <Link to="/add" className="button">
               Add a Movie
             </Link>
           </div>
@@ -35,25 +34,10 @@ export default function App() {
             <MovieDetail />
           </Route>
           <Route path="/">
-            <Home />
+            <MovieList />
           </Route>
         </Switch>
       </div>
     </Router>
-  );
-}
-
-function Home() {
-  const [movies, setMovies] = useState([]);
-
-  useEffect(() => {
-    getMovieList().then((data) => setMovies(data));
-  }, []);
-
-  return (
-    <main>
-      <h1>Marvel Movies</h1>
-      <MovieList movies={movies} />
-    </main>
   );
 }
