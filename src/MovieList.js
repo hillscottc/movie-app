@@ -10,28 +10,15 @@ export default function MovieList() {
   //   getMovieList().then((data) => setMovies(data));
   // }, []);
 
-  // Better performance?
+  // Better performance than useEffect?
   useMemo(() => {
     getMovieList().then((data) => setMovies(data));
   }, []);
 
   const columns = useMemo(
     () => [
-      {
-        Header: "Title",
-        accessor: "title",
-      },
-      {
-        Header: "Year",
-        accessor: "year",
-      },
-      {
-        accessor: "accessor",
-        Header: "Detail",
-        Cell: ({ row: { original } }) => (
-          <Link to={`/detail?id=${original.id}`}>Detail</Link>
-        ),
-      },
+      { Header: "Title", accessor: "title" },
+      { Header: "Year", accessor: "year" },
     ],
     []
   );
@@ -45,6 +32,32 @@ export default function MovieList() {
 }
 
 function Table({ columns, data }) {
+
+  const DefaultCell = ({ cell: { value, column }, row: { original } }) => (
+    <span
+      style={{
+        whiteSpace: "pre-wrap",
+      }}
+    >
+      {/* To handle the title column differently, as a link */}
+      {column.id === "title" ? (
+        <Link to={`/detail?id=${original.id}`}>{original.title}</Link>
+      ) : (
+        value
+      )}
+    </span>
+  );
+
+  const defaultColumn = React.useMemo(
+    () => ({
+      minWidth: 5,
+      width: 150,
+      maxWidth: 400,
+      Cell: DefaultCell,
+    }),
+    []
+  );
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -55,6 +68,7 @@ function Table({ columns, data }) {
     {
       columns,
       data,
+      defaultColumn,
     },
     useSortBy
   );
