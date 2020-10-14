@@ -19,6 +19,21 @@ These are the steps I used to deploy to Heroku:
 Dump of db made following [these directions](https://stackoverflow.com/questions/22887524/how-can-i-get-a-plain-text-postgres-database-dump-on-heroku),
 to file `dbdump.sql`
 
+```sql
+                                       Table "public.movies"
+   Column   |           Type           | Collation | Nullable |              Default
+------------+--------------------------+-----------+----------+------------------------------------
+ id         | integer                  |           | not null | nextval('movies_id_seq'::regclass)
+ title      | character varying(50)    |           |          |
+ year       | smallint                 |           |          |
+ thumb      | character varying(30)    |           |          |
+ videourl   | character varying(30)    |           |          |
+ created_at | timestamp with time zone |           | not null | now()
+ updated_at | timestamp with time zone |           | not null | now()
+ imdb_stars | real                     |           |          |
+ imdb       | character varying(100)   |           |          |
+```
+
 ## cURL Examples
 
 ```bash

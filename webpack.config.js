@@ -7,6 +7,7 @@ module.exports = {
   },
 
   devServer: {
+    historyApiFallback: true,
     // Set proxy so /api goes to the node server
     proxy: {
       "/api": {
@@ -22,9 +23,9 @@ module.exports = {
       {
         test: /\.(jpg|png)$/,
         use: {
-          loader: 'url-loader',
+          loader: "url-loader",
         },
-      },      
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,

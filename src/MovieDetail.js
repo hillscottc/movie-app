@@ -21,16 +21,24 @@ export default function MovieDetail() {
   return (
     <main>
       <h1>DETAIL </h1>
-      <dl>
-        <dt>Title</dt>
-        <dd>{movie && movie.title}</dd>
 
-        <dt>Year</dt>
-        <dd>{movie && movie.year}</dd>
+      <h2 className="flex">
+        <span className="label">Title</span>
+        <span className="label">Year</span>
+        <span className="label">Stars</span>
+        <span className="label">IMDB</span>
+      </h2>
+      <h2 className="flex">
+        <span>{movie && movie.title}</span>
+        <span>{movie && movie.year}</span>
+        <span>{movie && movie.imdb_stars}</span>
+        <span>{movie && movie.imdb && <a href={movie.imdb}>IMDB</a>}</span>
+      </h2>
 
-        <dt>Trailer</dt>
-        <dd>{movie && <ReactPlayer url={movie.videourl} />}</dd>
-      </dl>
+      <h2>
+        <span className="label">Trailer</span>
+      </h2>
+      <div style={{width: "50%", margin: "0 auto"}} >{movie && <ReactPlayer url={movie.videourl} />}</div>
     </main>
   );
 }
