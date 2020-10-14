@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
 import * as XDate from "xdate";
@@ -13,13 +13,14 @@ const getFormattedDate = (date) => {
 export default function MovieList() {
   const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   getMovieList().then((data) => setMovies(data));
+  // }, []);
+
+  // Better performance?
+  useMemo(() => {
     getMovieList().then((data) => setMovies(data));
   }, []);
-
-  // Try useMemo instead of useEffect?
-  // const data = React.useMemo(() => movies, [movies]);
-  // const data = movies;
 
   const columns = React.useMemo(
     () => [
@@ -75,7 +76,7 @@ function Table({ columns, data }) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                // Add the sorting props 
+                // Add the sorting props
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
                   {/* Add a sort direction indicator */}
