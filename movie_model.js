@@ -56,7 +56,8 @@ const deleteMovie = (movieId) => {
         if (error) {
           reject(error);
         }
-        resolve(`Deleted id: ${results}`);
+        // resolve(`Deleted id: ${results}`);
+        resolve(results.rows);
       }
     );
   });
