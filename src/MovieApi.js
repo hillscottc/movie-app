@@ -1,13 +1,9 @@
-export async function getMovieList() {
-  const response = await fetch("/api/movies");
-  const movies = await response.json();
-  return movies;
+export function getMovieListUrl() {
+  return "/api/movies";
 }
 
-export async function getMovieById(id) {
-  const response = await fetch(`/api/movies/${id}`);
-  const movies = await response.json();
-  if (movies.length > 0) return movies[0];
+export function getMovieByIdUrl(id) {
+  return (`/api/movies/${id}`);
 }
 
 export async function createMovie(data) {

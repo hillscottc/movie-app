@@ -1,19 +1,12 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
-import { getMovieList } from "./MovieApi";
+import { useRequest } from "./utils";
+import { getMovieListUrl } from "./MovieApi";
+import loadingImg from "./images/loading.gif";
 
 export default function MovieList() {
-  const [movies, setMovies] = useState([]);
-
-  // useEffect(() => {
-  //   getMovieList().then((data) => setMovies(data));
-  // }, []);
-
-  // Better performance than useEffect?
-  useMemo(() => {
-    getMovieList().then((data) => setMovies(data));
-  }, []);
+  const { data: movies, loading, error } = useRequest(getMovieListUrl());
 
   const doDelete = (id) => {
     console.log("DELETE ID:", id);
@@ -65,7 +58,8 @@ export default function MovieList() {
   return (
     <main>
       <h1>Movies</h1>
-      <Table columns={columns} data={movies} />
+      {loading && <img src={loadingImg} />}
+      {movies.length > 0 && <Table columns={columns} data={movies} />}
     </main>
   );
 }
