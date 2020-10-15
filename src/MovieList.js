@@ -9,9 +9,9 @@ export default function MovieList() {
   const { data: movies, loading, error } = useRequest(getMovieListUrl());
 
   const doDelete = async (id) => {
-    // const results = await deleteMovie(id);
-    const results = await deleteMovie(99);
-    console.log("Results:", results);
+    const results = await deleteMovie(id);
+    console.log("Deleted:", results);
+    window.location.reload();
   };
 
   // Declare the columns with customized cells as necessary

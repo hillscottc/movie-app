@@ -9,7 +9,7 @@ const pool = new Pool({
 
 const getMovies = () => {
   return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM movies ORDER BY id ASC", (error, results) => {
+    pool.query("SELECT * FROM movies ORDER BY title ASC", (error, results) => {
       if (error) {
         reject(error);
       }
@@ -56,7 +56,6 @@ const deleteMovie = (movieId) => {
         if (error) {
           reject(error);
         }
-        // resolve(`Deleted id: ${results}`);
         resolve(results.rows);
       }
     );
