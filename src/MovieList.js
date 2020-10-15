@@ -15,13 +15,37 @@ export default function MovieList() {
     getMovieList().then((data) => setMovies(data));
   }, []);
 
+  const doDelete = (id) => {
+    console.log("DELETE ID:", id);
+  };
+
   const columns = useMemo(
     () => [
-      { Header: "Title", accessor: "title" },
+      {
+        Header: "Title",
+        accessor: "title",
+        Cell: ({ row: { original } }) => (
+          <Link to={`/detail?id=${original.id}`}>{original.title}</Link>
+        ),
+      },
       { Header: "Year", accessor: "year" },
       { Header: "Stars", accessor: "imdb_stars" },
-      { Header: "IMDB", accessor: "imdb" },
-      { Header: "Delete", accessor: "locked" },
+      {
+        Header: "IMDB",
+        accessor: "imdb",
+        Cell: ({ row: { original } }) => (
+          <a href={original.imdb} target="_blank">
+            link
+          </a>
+        ),
+      },
+      {
+        Header: "Delete",
+        accessor: "locked",
+        Cell: ({ row: { original } }) => (
+          <button onClick={() => doDelete(original.id)}>delete</button>
+        ),
+      },
     ],
     []
   );
@@ -35,49 +59,6 @@ export default function MovieList() {
 }
 
 function Table({ columns, data }) {
-  const doDelete = (id) => {
-    console.log("DELETE ID:", id);
-  };
-
-  /** Get custom cells for some columns */
-  const getCell = (value, column, original) => {
-    let cell;
-    switch (column.id) {
-      case "title":
-        cell = <Link to={`/detail?id=${original.id}`}>{original.title}</Link>;
-        break;
-      case "imdb":
-        cell = (
-          <a href={original.imdb} target="_blank">
-            link
-          </a>
-        );
-        break;
-      case "locked":
-        cell = <button onClick={() => doDelete(original.id)}>delete</button>;
-        break;
-      default:
-        cell = value;
-    }
-    return cell;
-  };
-
-  const DefaultCell = ({ cell: { value, column }, row: { original } }) => (
-    <span style={{ whiteSpace: "pre-wrap" }}>
-      {getCell(value, column, original)}
-    </span>
-  );
-
-  const defaultColumn = React.useMemo(
-    () => ({
-      minWidth: 5,
-      width: 150,
-      maxWidth: 400,
-      Cell: DefaultCell,
-    }),
-    []
-  );
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -88,7 +69,6 @@ function Table({ columns, data }) {
     {
       columns,
       data,
-      defaultColumn,
     },
     useSortBy
   );
