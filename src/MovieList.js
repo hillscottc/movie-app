@@ -19,6 +19,7 @@ export default function MovieList() {
     console.log("DELETE ID:", id);
   };
 
+  // Declare the columns with customized cells as necessary
   const columns = useMemo(
     () => [
       {
@@ -43,7 +44,18 @@ export default function MovieList() {
         Header: "Delete",
         accessor: "locked",
         Cell: ({ row: { original } }) => (
-          <button onClick={() => doDelete(original.id)}>delete</button>
+          // using spread syntax here to conditionally render tooltip
+          <button
+            {...{
+              disabled: original.locked,
+              ...(original.locked && {
+                "data-tooltip": "locked records can't be deleted",
+              }),
+              onClick: () => doDelete(original.id),
+            }}
+          >
+            delete
+          </button>
         ),
       },
     ],
@@ -78,15 +90,14 @@ function Table({ columns, data }) {
 
   return (
     <>
+      {/* This is pretty-much boilerplate for a sortable table. */}
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                // Add the sorting props
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
-                  {/* Add a sort direction indicator */}
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
