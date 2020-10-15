@@ -3,7 +3,7 @@ export function getMovieListUrl() {
 }
 
 export function getMovieByIdUrl(id) {
-  return (`/api/movies/${id}`);
+  return `/api/movies/${id}`;
 }
 
 export async function createMovie(data) {
@@ -13,6 +13,13 @@ export async function createMovie(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
+  const text = await response.text();
+  return text;
+}
+
+export async function deleteMovie(id) {
+  console.log("Trying to delete ", id);
+  const response = await fetch(`/api/movies/${id}`, { method: "DELETE" });
   const text = await response.text();
   return text;
 }

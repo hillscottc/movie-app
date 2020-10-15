@@ -20,9 +20,7 @@ const getMovies = () => {
 
 const getMovieById = (id) => {
   return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM movies WHERE id = $1",
-    [id],
-     (error, results) => {
+    pool.query("SELECT * FROM movies WHERE id = $1", [id], (error, results) => {
       if (error) {
         reject(error);
       }
@@ -51,19 +49,22 @@ const createMovie = (body) => {
 const deleteMovie = (movieId) => {
   return new Promise((resolve, reject) => {
     const id = parseInt(movieId);
-
-    pool.query("DELETE FROM movies WHERE id = $1", [id], (error, results) => {
-      if (error) {
-        reject(error);
+    pool.query(
+      "DELETE FROM movies WHERE id = $1 RETURNING id",
+      [id],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(`Deleted id: ${results}`);
       }
-      resolve(`Movie deleted with ID: ${id}`);
-    });
+    );
   });
 };
 
 module.exports = {
   getMovies,
-  getMovieById,  
+  getMovieById,
   createMovie,
   deleteMovie,
 };

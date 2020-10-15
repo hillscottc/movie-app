@@ -2,14 +2,16 @@ import React, { useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
 import { useRequest } from "./utils";
-import { getMovieListUrl } from "./MovieApi";
+import { getMovieListUrl, deleteMovie } from "./MovieApi";
 import loadingImg from "./images/loading.gif";
 
 export default function MovieList() {
   const { data: movies, loading, error } = useRequest(getMovieListUrl());
 
-  const doDelete = (id) => {
-    console.log("DELETE ID:", id);
+  const doDelete = async (id) => {
+    // const results = await deleteMovie(id);
+    const results = await deleteMovie(99);
+    console.log("Results:", results);
   };
 
   // Declare the columns with customized cells as necessary

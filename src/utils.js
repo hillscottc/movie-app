@@ -4,7 +4,7 @@ import axios from "axios";
 
 /**
  * Hook for fetching data with handling for isLoading and errors.
- * https://andrewmmc.com/blog/2020/handle-fetch-state-in-react-hooks/
+ * <https://andrewmmc.com/blog/2020/handle-fetch-state-in-react-hooks/>
  * @param {*} dataUrl
  */
 export const useRequest = (dataUrl) => {
@@ -34,9 +34,10 @@ export const useRequest = (dataUrl) => {
 
 /**
  * Get params from the url for react router pages.
- * Usage:
+ * @example
  *  const urlParamsObj = getUrlParamsObj();
  *  const id = urlParamsObj.get("id");
+ * @returns {Object} Use .get('x') to access the params
  */
 export const getUrlParamsObj = () => {
   return new URLSearchParams(useLocation().search);
