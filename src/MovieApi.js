@@ -10,28 +10,16 @@ export async function getMovieById(id) {
   if (movies.length > 0) return movies[0];
 }
 
-// function getAlbumsByArtist(artist) {
-//   fetch(`${HOST_URL}/albums?artist=${artist}`)
-//     .then((response) => response.json())
-//     .then((data) => setAlbums(data));
-// }
-
-// function createAlbum(data) {
-//   fetch(`${HOST_URL}/albums`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   })
-//     .then((response) => {
-//       return response.text();
-//     })
-//     .then((data) => {
-//       alert(data);
-//       getAlbums();
-//     });
-// }
+export async function createMovie(data) {
+  console.log("Posting data:", data);
+  const response = await fetch("/api/movies", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const text = await response.text();
+  return text;
+}
 
 // function deleteAlbum(id) {
 //   fetch(`${HOST_URL}/albums/${id}`, {

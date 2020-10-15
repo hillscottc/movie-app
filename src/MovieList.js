@@ -21,6 +21,7 @@ export default function MovieList() {
       { Header: "Year", accessor: "year" },
       { Header: "Stars", accessor: "imdb_stars" },
       { Header: "IMDB", accessor: "imdb" },
+      { Header: "Delete", accessor: "locked" },
     ],
     []
   );
@@ -34,6 +35,10 @@ export default function MovieList() {
 }
 
 function Table({ columns, data }) {
+  const doDelete = (id) => {
+    console.log("DELETE ID:", id);
+  };
+
   /** Get custom cells for some columns */
   const getCell = (value, column, original) => {
     let cell;
@@ -47,6 +52,9 @@ function Table({ columns, data }) {
             link
           </a>
         );
+        break;
+      case "locked":
+        cell = <button onClick={() => doDelete(original.id)}>delete</button>;
         break;
       default:
         cell = value;

@@ -43,6 +43,7 @@ app.get("/api/movies/:id", (req, res) => {
 
 // insert movie with json data
 app.post("/api/movies", jsonParser, (req, res) => {
+  console.log("Server got:", req.body)
   movie_model
     .createMovie(req.body)
     .then((response) => {
