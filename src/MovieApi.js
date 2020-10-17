@@ -17,6 +17,16 @@ export async function createMovie(data) {
   return text;
 }
 
+export async function createMovieFromForm(formData) {
+  console.log("Posting data:", formData);
+  const response = await fetch("/api/movies/form", {
+    method: "POST",
+    body: formData,
+  });
+  const json = await response.json();
+  return json;
+}
+
 export async function deleteMovie(id) {
   console.log("Trying to delete ", id);
   const response = await fetch(`/api/movies/${id}`, { method: "DELETE" });

@@ -1,19 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { createMovie } from "./MovieApi";
+import { createMovie, createMovieFromForm } from "./MovieApi";
 
 export default function MovieAdd() {
   // const [movie, setMovie] = useState(null);
 
   const { handleSubmit, register, errors } = useForm();
-  const onSubmit = (values) => {
-    createMovie(values).then((text) => console.log("Results:", text));
+
+  // with json..
+  // const submit = (values) => {
+  //   createMovie(values).then((text) => console.log("Results:", text));
+  // };
+
+  // with form data..
+  const submit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form.current);
+    const json = await createMovieFromForm(formData);
+    console.log("Results:", json);
+
+    // fetch('/api', { method: 'POST', body: data })
+    //   .then(res => res.json())
+    //   .then(json => setUser(json.user))
   };
 
   return (
     <main>
       <h1>ADD</h1>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ width: "75%" }}>
+      <form onSubmit={handleSubmit(submit)} style={{ width: "75%" }}>
         <div>
           Title:
           <input name="title" ref={register({ required: "Required" })} />

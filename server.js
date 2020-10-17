@@ -43,7 +43,7 @@ app.get("/api/movies/:id", (req, res) => {
 
 // insert movie with json data
 app.post("/api/movies", jsonParser, (req, res) => {
-  console.log("Server got:", req.body)
+  console.log("Server got:", req.body);
   movie_model
     .createMovie(req.body)
     .then((response) => {
@@ -66,10 +66,12 @@ app.delete("/api/movies/:id", (req, res) => {
     });
 });
 
-// SAMPLE FOR HANDLING FORM DATA
-// const urlencodedParser = bodyParser.urlencoded({ extended: false });
-// app.post('/login', urlencodedParser, function (req, res) {
-//   res.send('welcome, ' + req.body.username)
-// })
+// insert movie with  FORM DATA
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+app.post("/api/movies/form", urlencodedParser, function (req, res) {
+  // res.send('welcome, ' + req.body.username)
+
+  console.log("SERVER GOT FORM:", req.body);
+});
 
 app.listen(port);
