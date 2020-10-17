@@ -12,22 +12,21 @@ export default function MovieAdd() {
   //   createMovie(values).then((text) => console.log("Results:", text));
   // };
 
-  // with form data..
-  const submit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(form.current);
-    const json = await createMovieFromForm(formData);
-    console.log("Results:", json);
+  const submit = async (data) => {
+    const formData = new FormData();
+    formData.append("picture", data.picture[0]);
 
-    // fetch('/api', { method: 'POST', body: data })
-    //   .then(res => res.json())
-    //   .then(json => setUser(json.user))
+    const results = createMovieFromForm(formData).then((json) => {
+      console.log("UPLOAD RESULTS:", json);
+    });
   };
 
   return (
     <main>
       <h1>ADD</h1>
       <form onSubmit={handleSubmit(submit)} style={{ width: "75%" }}>
+        <input ref={register} type="file" name="picture" />
+
         <div>
           Title:
           <input name="title" ref={register({ required: "Required" })} />
