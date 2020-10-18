@@ -18,7 +18,6 @@ export async function createMovie(data) {
 }
 
 export async function createMovieFromForm(formData) {
-  console.log("Posting data:", formData);
   const response = await fetch("/api/movies/form", {
     method: "POST",
     body: formData,

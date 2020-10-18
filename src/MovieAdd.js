@@ -14,7 +14,19 @@ export default function MovieAdd() {
 
   const submit = async (data) => {
     const formData = new FormData();
-    formData.append("picture", data.picture[0]);
+
+    const { title, year, imdb_stars } = data;
+    const picture = data.picture[0];
+
+    // formData.append("picture", picture);
+    formData.append("title", title);
+    formData.append("year", year);
+    formData.append("imdb_stars", imdb_stars);
+
+    // console.log("POSTING FORMDATA...", formData);
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
 
     const results = createMovieFromForm(formData).then((json) => {
       console.log("UPLOAD RESULTS:", json);

@@ -3,6 +3,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const movie_model = require("./movie_model");
 
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+
 const port = process.env.PORT || 8080;
 const app = express();
 
@@ -15,6 +18,12 @@ app.use(express.static(__dirname));
 // web root
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "index.html"));
+});
+
+// FILE POST!!
+app.post("/api/movies/form", upload.single("image"), (req, res) => {
+  console.log("SERVER GOT FORM:", req.body);
+  console.log("SERVER GOT FILE:", req.file);
 });
 
 // movie list
@@ -67,11 +76,9 @@ app.delete("/api/movies/:id", (req, res) => {
 });
 
 // insert movie with  FORM DATA
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
-app.post("/api/movies/form", urlencodedParser, function (req, res) {
-  // res.send('welcome, ' + req.body.username)
-
-  console.log("SERVER GOT FORM:", req.body);
-});
+// const urlencodedParser = bodyParser.urlencoded({ extended: false });
+// app.post("/api/movies/form", urlencodedParser, function (req, res) {
+//   console.log("SERVER GOT FORM:", req.body);
+// });
 
 app.listen(port);
