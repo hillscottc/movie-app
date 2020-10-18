@@ -37,7 +37,7 @@ export default function MovieAdd() {
     <main>
       <h1>ADD</h1>
       <form onSubmit={handleSubmit(submit)} style={{ width: "75%" }}>
-        <input ref={register} type="file" name="picture" />
+        <input ref={register} type="file" name="poster" />
 
         <div>
           Title:
