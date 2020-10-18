@@ -16,9 +16,9 @@ export default function MovieAdd() {
     const formData = new FormData();
 
     const { title, year, imdb_stars } = data;
-    const picture = data.picture[0];
+    const poster = data.poster[0];
 
-    // formData.append("picture", picture);
+    formData.append("poster", poster);
     formData.append("title", title);
     formData.append("year", year);
     formData.append("imdb_stars", imdb_stars);

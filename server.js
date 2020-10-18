@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 // FILE POST!!
-app.post("/api/movies/form", upload.single("image"), (req, res) => {
+app.post("/api/movies/form", upload.single("poster"), (req, res) => {
   console.log("SERVER GOT FORM:", req.body);
   console.log("SERVER GOT FILE:", req.file);
 });
