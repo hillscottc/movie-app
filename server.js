@@ -39,7 +39,7 @@ app.post("/api/movies/form", upload.single("poster"), (req, res) => {
 
   // const data = { image: req.file, };
   // const data = { image: JSON.stringify(req.file) };
-  const data = { image: JSON.stringify(req.body.poster) };
+  const data = { image: req.body.poster };
 
   // upload image here
   cloudinary.uploader
