@@ -24,13 +24,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "index.html"));
 });
 
-// FILE POST!!
-// app.post("/api/movies/form", upload.single("poster"), (req, res) => {
-//   console.log("SERVER GOT FORM:", req.body);
-//   console.log("SERVER GOT FILE:", req.file);
-// });
-
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -38,14 +32,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.post("/api/movies/form", function (req, res, next) {
-  const data = {
-    image: req.body.poster,
-  };
+// FILE POST!!
+app.post("/api/movies/form", upload.single("poster"), (req, res) => {
+  console.log("SERVER GOT FORM:", req.body);
+  console.log("SERVER GOT FILE:", req.file);
+  // const data = { image: req.file, };
 
   // upload image here
   cloudinary.uploader
-    .upload(data.image)
+    .upload({ image: req.file })
     .then((result) => {
       response.status(200).send({
         message: "success",
@@ -59,6 +54,28 @@ app.post("/api/movies/form", function (req, res, next) {
       });
     });
 });
+
+// app.post("/api/movies/form", function (req, res, next) {
+//   const data = {
+//     image: req.body.poster,
+//   };
+
+//   // upload image here
+//   cloudinary.uploader
+//     .upload(data.image)
+//     .then((result) => {
+//       response.status(200).send({
+//         message: "success",
+//         result,
+//       });
+//     })
+//     .catch((error) => {
+//       response.status(500).send({
+//         message: "failure",
+//         error,
+//       });
+//     });
+// });
 
 // movie list
 app.get("/api/movies", (req, res) => {
