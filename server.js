@@ -36,12 +36,13 @@ cloudinary.config({
 app.post("/api/movies/form", upload.single("poster"), (req, res) => {
   console.log("SERVER GOT FORM:", req.body);
   console.log("SERVER GOT FILE:", req.file);
+
   // const data = { image: req.file, };
+  const data = { image: JSON.stringify(req.file) };
 
   // upload image here
   cloudinary.uploader
-    // .upload({ image: req.file })
-    .upload({ image: req.body })
+    .upload(data)
     .then((result) => {
       response.status(200).send({
         message: "success",
