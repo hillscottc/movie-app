@@ -40,7 +40,7 @@ cloudinary.config({
 
 app.post("/api/movies/form", function (req, res, next) {
   const data = {
-    image: request.body.poster,
+    image: req.body.poster,
   };
 
   // upload image here
