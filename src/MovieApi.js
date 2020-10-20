@@ -23,11 +23,11 @@ export async function createMovieFromForm(formData) {
     body: formData,
   });
 
-  const json = await response.json();
-  return json;
+  // const json = await response.json();
+  // return json;
 
-  // const text = await response.text();
-  // return text;
+  const text = await response.text();
+  return text;
 }
 
 export async function deleteMovie(id) {

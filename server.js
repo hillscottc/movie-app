@@ -4,7 +4,7 @@ const multer = require("multer");
 const path = require("path");
 const cloudinary = require("cloudinary");
 
-const fs = require('fs');
+const fs = require("fs");
 
 const movie_model = require("./movie_model");
 
@@ -30,18 +30,35 @@ app.get("/", (req, res) => {
 //   console.log("SERVER GOT FILE:", req.file);
 // });
 
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/api/movies/form', function(req, res, next) {
-  const stream = cloudinary.uploader.upload_stream((result) => {
-    console.log(result);
-    res.send('Done:<br/> <img src="' + result.url + '"/><br/>' +
-             cloudinary.image(result.public_id, { format: "png", width: 100, height: 130, crop: "fill" }));
-  }, { public_id: req.body.title } );
-  fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+app.post("/api/movies/form", function (req, res, next) {
+  const data = {
+    image: request.body.poster,
+  };
 
-
+  // upload image here
+  cloudinary.uploader
+    .upload(data.image)
+    .then((result) => {
+      response.status(200).send({
+        message: "success",
+        result,
+      });
+    })
+    .catch((error) => {
+      response.status(500).send({
+        message: "failure",
+        error,
+      });
+    });
+});
 
 // movie list
 app.get("/api/movies", (req, res) => {
