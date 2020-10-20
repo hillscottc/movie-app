@@ -40,7 +40,8 @@ app.post("/api/movies/form", upload.single("poster"), (req, res) => {
 
   // upload image here
   cloudinary.uploader
-    .upload({ image: req.file })
+    // .upload({ image: req.file })
+    .upload({ image: req.body })
     .then((result) => {
       response.status(200).send({
         message: "success",
