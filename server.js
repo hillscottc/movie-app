@@ -39,7 +39,7 @@ app.get("/", function (req, res) {
 });
 
 app.post("/", function (req, res, next) {
-  stream = cloudinary.uploader.upload_stream(
+  let stream = cloudinary.uploader.upload_stream(
     function (result) {
       console.log(result);
       res.send(
