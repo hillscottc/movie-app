@@ -7,6 +7,8 @@ Hosted on Heroku at <https://afternoon-stream-77228.herokuapp.com>
 Node, Express, Postgres, React, Webpack, [Picnic CSS](https://picnicss.com/documentation), [React Table](https://react-table.tanstack.com/)
 Based from boilerplate <https://github.com/hillscottc/heroku-postgres-webpack>
 
+cloudinary-vertical-50238 as CLOUDINARY_URL
+
 ## Heroku setup
 
 These are the steps I used to deploy to Heroku:
