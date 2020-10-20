@@ -20,42 +20,45 @@ const jsonParser = bodyParser.json();
 app.use(express.static(__dirname));
 
 // web root
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "index.html"));
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "index.html"));
+// });
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+app.use(express.bodyParser());
+
+app.get("/", function (req, res) {
+  res.send(
+    '<form method="post" enctype="multipart/form-data">' +
+      '<p>Public ID: <input type="text" name="title"/></p>' +
+      '<p>Image: <input type="file" name="image"/></p>' +
+      '<p><input type="submit" value="Upload"/></p>' +
+      "</form>"
+  );
 });
 
-// FILE POST!!
-app.post("/api/movies/form", upload.single("poster"), (req, res) => {
-  console.log("SERVER GOT FORM:", req.body);
-  console.log("SERVER GOT FILE:", req.file);
-
-  // const data = { image: req.file, };
-  // const data = { image: JSON.stringify(req.file) };
-  const data = { image: req.file.path };
-
-  // upload image here
-  cloudinary.uploader
-    .upload(data)
-    .then((result) => {
-      response.status(200).send({
-        message: "success",
-        result,
-      });
-    })
-    .catch((error) => {
-      response.status(500).send({
-        message: "failure",
-        error,
-      });
-    });
+app.post("/", function (req, res, next) {
+  stream = cloudinary.uploader.upload_stream(
+    function (result) {
+      console.log(result);
+      res.send(
+        'Done:<br/> <img src="' +
+          result.url +
+          '"/><br/>' +
+          cloudinary.image(result.public_id, {
+            format: "png",
+            width: 100,
+            height: 130,
+            crop: "fill",
+          })
+      );
+    },
+    { public_id: req.body.title }
+  );
+  fs.createReadStream(req.files.image.path, { encoding: "binary" })
+    .on("data", stream.write)
+    .on("end", stream.end);
 });
 
 // app.post("/api/movies/form", function (req, res, next) {
