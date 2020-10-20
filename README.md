@@ -7,19 +7,6 @@ Hosted on Heroku at <https://afternoon-stream-77228.herokuapp.com>
 Node, Express, Postgres, React, Webpack, [Picnic CSS](https://picnicss.com/documentation), [React Table](https://react-table.tanstack.com/)
 Based from boilerplate <https://github.com/hillscottc/heroku-postgres-webpack>
 
-To see the cloudinary vars...
-heroku addons:open cloudinary
-
-cloudinary-vertical-50238 as CLOUDINARY_URL
-
-heroku config:set CLOUDINARY_API_KEY=.....
-heroku config:set CLOUDINARY_API_SECRET=.....
-heroku config:set CLOUDINARY_CLOUD_NAME=.....
-CLOUDINARY_URL is already set by heroku add_on
-
-
-
-
 ## Heroku setup
 
 These are the steps I used to deploy to Heroku:
