@@ -1,6 +1,12 @@
 # Movie App
 
+Run app locally: `npm run dev`
+
+(Not just `npm start`...that only starts the server, not the full app.)
+
 Hosted on Heroku at <https://afternoon-stream-77228.herokuapp.com>
+
+
 
 ## Tech and Libraries
 
