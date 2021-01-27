@@ -1,30 +1,17 @@
 # Movie App
 
-Run app locally: `npm run dev`
+Run app locally : `npm run dev`  
+(*Not* just `npm start`,which only starts the node server, not the full app.)
 
-(Not just `npm start`...that only starts the server, not the full app.)
-
-Hosted on Heroku at <https://afternoon-stream-77228.herokuapp.com>
-
-
+Or, see it hosted on Heroku at <https://afternoon-stream-77228.herokuapp.com>
 
 ## Tech and Libraries
 
 Node, Express, Postgres, React, Webpack, [Picnic CSS](https://picnicss.com/documentation), [React Table](https://react-table.tanstack.com/)
-Based from boilerplate <https://github.com/hillscottc/heroku-postgres-webpack>
 
-## Heroku setup
+Stack adapted from boilerplate at: <https://github.com/hillscottc/heroku-postgres-webpack>
 
-These are the steps I used to deploy to Heroku:
-
-1. Push the repo to github
-2. `heroku create` # Created app name afternoon-stream-77228
-3. `heroku addons:create heroku-postgresql:hobby-dev`
-4. `heroku pg:psql` # To open psql to db
-
-Dump of db made following [these directions](https://stackoverflow.com/questions/22887524/how-can-i-get-a-plain-text-postgres-database-dump-on-heroku),
-to file `dbdump.sql`
-
+## Postgres Database
 ```sql
                                        Table "public.movies"
    Column   |           Type           | Collation | Nullable |              Default
@@ -40,8 +27,10 @@ to file `dbdump.sql`
  imdb       | character varying(100)   |           |          |
 ```
 
-## cURL Examples
+## Node Server and api
+Node Express server handles api requests at `/api`
 
+#### cURL Examples
 ```bash
 # GET ALL
 curl -i -H "Accept: application/json" "https://afternoon-stream-77228.herokuapp.com/api/movies"
@@ -58,19 +47,18 @@ curl -H "Content-Type: application/json" -X POST \
 curl -X DELETE "https://afternoon-stream-77228.herokuapp.com/api/movies/8"
 ```
 
-### Dev server webpack config to proxy /api queries
+## Notes
 
-<https://webpack.js.org/configuration/dev-server/#devserverproxy>
-
-```json
-devServer: {
-    // Set proxy so /api goes to the node server
-    proxy: {
-      "/api": {
-        target: "https://afternoon-stream-77228.herokuapp.com",
-        secure: false,
-        changeOrigin: true,
+* Dev server webpack config to proxy /api queries, <https://webpack.js.org/configuration/dev-server/#devserverproxy>
+    ```
+    devServer: {
+        // Set proxy so /api goes to the node server
+        proxy: {
+          "/api": {
+            target: "https://afternoon-stream-77228.herokuapp.com",
+            secure: false,
+            changeOrigin: true,
+          },
+        },
       },
-    },
-  },
-```
+    ```
