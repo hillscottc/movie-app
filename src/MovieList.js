@@ -1,5 +1,4 @@
-import React, { useMemo } from "react";
-import { useTable, useSortBy } from "react-table";
+import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useRequest } from "./utils";
 import { getMovieListUrl, deleteMovie } from "./MovieApi";
@@ -8,121 +7,103 @@ import loadingImg from "./images/loading.gif";
 export default function MovieList() {
   const { data: movies, loading, error } = useRequest(getMovieListUrl());
 
+  const [watchlist, setWatchlist] = useState([0]);
+
+  useEffect(() => {
+    setWatchlistFromLocal()
+  }, [])
+
+  const setWatchlistFromLocal = () => {
+    const localList = localStorage.getItem("watchlist");
+    try {
+      console.log("Loading watchlist list from local")
+      setWatchlist(JSON.parse(localList));
+    } catch (e) {
+      console.warn("Failed to parse localStorage localList:", localList)
+    }
+  }
+
   const doDelete = async (id) => {
     const results = await deleteMovie(id);
     console.log("Deleted:", results);
     window.location.reload();
   };
 
-  // Declare the columns with customized cells as necessary
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Title",
-        accessor: "title",
-        Cell: ({ row: { original } }) => (
-          <Link to={`/detail?id=${original.id}`}>{original.title}</Link>
-        ),
-      },
-      { Header: "Year", accessor: "year" },
-      { Header: "Stars", accessor: "imdb_stars" },
-      {
-        Header: "IMDB",
-        accessor: "imdb",
-        Cell: ({ row: { original } }) => (
-          <a href={original.imdb} target="_blank">
-            link
-          </a>
-        ),
-      },
-      {
-        Header: "Delete",
-        accessor: "locked",
-        Cell: ({ row: { original } }) => (
-          // using spread syntax here to conditionally render tooltip
-          <button
-            {...{
-              disabled: original.locked,
-              ...(original.locked && {
-                "data-tooltip": "locked records can't be deleted",
-              }),
-              onClick: () => doDelete(original.id),
-            }}
-          >
-            delete
-          </button>
-        ),
-      },
-    ],
-    []
-  );
+  const watchlistUpdate = async (id, isAdd=true) => {
+    let newWatchlist = null
+    if (isAdd) {
+      console.log("ADD IT!")
+      newWatchlist = [...watchlist, id];
+    } else {
+      console.log("REMOVE IT!")
+      newWatchlist = watchlist.filter(x => x !== id);
+    }
+
+    if (newWatchlist) {
+      console.log("UPDATE BOTH TO ", newWatchlist)
+      setWatchlist(newWatchlist)
+      localStorage.setItem("watchlist", JSON.stringify(newWatchlist));
+    }
+  }
+
+  const doWatchlistClick = async (id) => {
+    const index = watchlist.indexOf(id);
+    console.log("doWatchlistClick handling", {watchlist, id, index})
+
+    // if its already there, remove it, otherwise add it
+    if (index > -1) await watchlistUpdate(id, false);
+    else await watchlistUpdate(id);
+  };
 
   return (
     <main>
       <h1>Movies</h1>
       {loading && <img src={loadingImg} />}
-      {movies.length > 0 && <Table columns={columns} data={movies} />}
+      <MovieTable {...{movies, doDelete, doWatchlistClick}} />
     </main>
   );
 }
 
-function Table({ columns, data }) {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-    },
-    useSortBy
-  );
 
-  // Cap number of rows
-  const firstPageRows = rows.slice(0, 100);
-
+function MovieTable({movies, doDelete, doWatchlistClick}) {
   return (
-    <>
-      {/* This is pretty-much boilerplate for a sortable table. */}
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {firstPageRows.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <br />
-      <div>Showing the first 100 results of {rows.length} rows</div>
-    </>
-  );
+    <table>
+      <thead>
+      <tr>
+        <th>title</th>
+        <th>year</th>
+        <th>stars</th>
+        <th>imdb</th>
+        <th>delete</th>
+        <th>watchlist</th>
+      </tr>
+      </thead>
+      <tbody>
+      {movies.length > 0 && movies.map((movie) => (
+        <tr key={movie.id}>
+          <td><Link to={`/detail?id=${movie.id}`}>{movie.title}</Link></td>
+          <td>{movie.year}</td>
+          <td>{movie.imdb_stars}</td>
+          <td><a href={movie.imdb} target="_blank">
+            link
+          </a></td>
+          <td>
+            <button
+            {...{
+              disabled: movie.locked,
+              ...(movie.locked && {"data-tooltip": "locked records can't be deleted"}),
+              onClick: () => doDelete(movie.id),
+            }}
+            >
+              delete
+            </button>
+          </td>
+          <td>
+            <button onClick={() => doWatchlistClick(movie.id)}>WATCHLIST</button>
+          </td>
+        </tr>
+      ))}
+      </tbody>
+    </table>
+  )
 }

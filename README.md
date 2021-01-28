@@ -7,7 +7,7 @@ Or, see it hosted on Heroku at <https://afternoon-stream-77228.herokuapp.com>
 
 ## Tech and Libraries
 
-Node, Express, Postgres, React, Webpack, [Picnic CSS](https://picnicss.com/documentation), [React Table](https://react-table.tanstack.com/)
+Node, Express, Postgres, React, Webpack, [Picnic CSS](https://picnicss.com/documentation))
 
 Stack adapted from boilerplate at: <https://github.com/hillscottc/heroku-postgres-webpack>
 
