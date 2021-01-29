@@ -1,7 +1,9 @@
 # Movie App
 
-Run app locally : `npm run dev`  
-(*Not* just `npm start`,which only starts the node server, not the full app.)
+To run this app locally :
+* git clone this repo
+* `npm install`  
+* `npm run dev` (*Not* just `npm start`,which only starts the node server, not the full app.)
 
 Or, see it hosted on Heroku at <https://afternoon-stream-77228.herokuapp.com>
 
