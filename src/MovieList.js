@@ -1,17 +1,33 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { useRequest } from "./utils";
 import { getMovieListUrl, deleteMovie } from "./MovieApi";
+import {MovieTable, MovieSearch} from "./MovieTable";
 import loadingImg from "./images/loading.gif";
 
 export default function MovieList() {
   const { data: movies, loading, error } = useRequest(getMovieListUrl());
-
   const [favlist, setFavlist] = useState([0]);
+  const [searchParams, setSearchParams] = useState('');
+  const [matchedIds, setMatchedIds] = useState([]);
 
   useEffect(() => {
     setFavlistFromLocal()
   }, [])
+
+  useEffect(() => {
+    updateSearchResults()
+  }, [searchParams])
+
+  const updateSearchResults = () => {
+    if (searchParams && movies) {
+      const matchedMovies = movies.filter(movie => movie.title.includes(searchParams))
+      setMatchedIds(matchedMovies.map(movie => movie.id))
+    } else if (movies && movies.length > 0){
+      setMatchedIds(movies.map(movie => movie.id))
+    } else {
+      setMatchedIds([])
+    }
+  }
 
   const setFavlistFromLocal = () => {
     const localList = localStorage.getItem("favlist");
@@ -32,27 +48,14 @@ export default function MovieList() {
   };
 
   const favlistUpdate = async (id, isAdd=true) => {
-    let newWatchlist = null
-    if (isAdd) {
-      console.log("ADD IT!")
-      newWatchlist = [...favlist, id];
-    } else {
-      console.log("REMOVE IT!")
-      newWatchlist = favlist.filter(x => x !== id);
-    }
-
+    const newWatchlist = isAdd ? [...favlist, id] : favlist.filter(x => x !== id);
     if (newWatchlist) {
-      console.log("UPDATE BOTH TO ", newWatchlist)
       setFavlist(newWatchlist)
       localStorage.setItem("favlist", JSON.stringify(newWatchlist));
     }
   }
 
   const doFavlistClick = async (id) => {
-    console.log("doWatchlistClick handling", {favlist, id})
-
-
-
     const index = favlist.indexOf(id);
     console.log("index", index)
 
@@ -65,54 +68,13 @@ export default function MovieList() {
     <main>
       <h1>Movies</h1>
       {loading && <img src={loadingImg} />}
-      <MovieTable {...{movies, doDelete, doFavlistClick, favlist}} />
+      <section style={{marginBottom: '30px'}}>
+        <MovieSearch {...{searchParams, setSearchParams}}/>
+      </section>
+      <section>
+        <MovieTable {...{movies, doDelete, doFavlistClick, favlist, matchedIds}} />
+      </section>
     </main>
   );
 }
 
-
-function MovieTable({movies, doDelete, doFavlistClick, favlist}) {
-  return (
-    <table>
-      <thead>
-      <tr>
-        <th>id</th>
-        <th>title</th>
-        <th>year</th>
-        <th>stars</th>
-        <th>imdb</th>
-        <th>delete</th>
-        <th>favlist</th>
-      </tr>
-      </thead>
-      <tbody>
-      {movies.length > 0 && movies.map((movie) => (
-        <tr key={movie.id}>
-          <td>{movie.id}</td>
-          <td><Link to={`/detail?id=${movie.id}`}>{movie.title}</Link></td>
-          <td>{movie.year}</td>
-          <td>{movie.imdb_stars}</td>
-          <td><a href={movie.imdb} target="_blank">
-            link
-          </a></td>
-          <td>
-            <button
-            {...{
-              disabled: movie.locked,
-              ...(movie.locked && {"data-tooltip": "locked records can't be deleted"}),
-              onClick: () => doDelete(movie.id),
-            }}
-            >
-              delete
-            </button>
-          </td>
-          <td>
-            {favlist.includes(movie.id) && <button style={{backgroundColor: 'green'}} onClick={() => doFavlistClick(movie.id)}> - </button>}
-            {! favlist.includes(movie.id) && <button style={{backgroundColor: 'red'}} onClick={() => doFavlistClick(movie.id)}> + </button>}
-          </td>
-        </tr>
-      ))}
-      </tbody>
-    </table>
-  )
-}
